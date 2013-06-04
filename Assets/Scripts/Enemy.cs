@@ -23,6 +23,7 @@ public class Enemy : MonoBehaviour {
 	void OnTriggerEnter( Collider collider ){
 		if( collider.gameObject.tag == "Player" ){
 			Instantiate( bullet, _transform.position, Quaternion.LookRotation(Vector3.forward, collider.transform.position - _transform.position) ); 
+			
 			Destroy( gameObject );
 		}
 	}
