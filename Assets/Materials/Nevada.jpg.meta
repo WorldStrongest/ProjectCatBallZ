@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: 61152ff9002b3dd46b3e97c92d12cf2c
+=======
+guid: 8766e213a336aed4fa7f22e1336bad24
+>>>>>>> Enemy Gets Hit
 TextureImporter:
   serializedVersion: 2
   mipmaps:

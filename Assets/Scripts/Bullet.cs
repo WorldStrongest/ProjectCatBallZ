@@ -8,16 +8,18 @@ public class Bullet : MonoBehaviour {
 	public int damage;
 	public int pierceCount;
 	public bool enemyBullet;
-	string TAG;
+//	string TAG;
 	
 	// Use this for initialization
 	void Start () {
-		TAG = gameObject.tag;
+//		TAG = gameObject.tag;
 		_transform = transform;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		
+		
 		_transform.position += _transform.up*(bulletSpeed*Time.deltaTime);
 		if( _transform.position.y > 115.0f ) {
 			Destroy( gameObject );
@@ -29,6 +31,7 @@ public class Bullet : MonoBehaviour {
 		//Collision with Enemy/Player/Wall
 		if( !enemyBullet && collider.gameObject.tag == "Enemy" ) {
 			Destroy( gameObject );
+			collider.gameObject.GetComponent<Enemy>().hitPoints--;
 		}
 		else if( enemyBullet && collider.gameObject.tag == "Player" ){
 			Destroy( gameObject );
