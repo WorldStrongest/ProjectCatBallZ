@@ -24,7 +24,7 @@ public class Player : MonoBehaviour {
 //			_transform.position += ( -speed*Time.deltaTime, 0, 0 );
 //		}
 		
-		Debug.Log( nextShot);
+//		Debug.Log( nextShot);
 		transform.position += Vector3.right*( Input.GetAxis( "Horizontal" )*speed*Time.deltaTime );
 		transform.position += Vector3.up*( Input.GetAxis( "Vertical" )*speed*Time.deltaTime );
 		

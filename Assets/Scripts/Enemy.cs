@@ -6,6 +6,7 @@ public class Enemy : MonoBehaviour {
 	Transform _transform;
 	public int hitPoints;
 	public int speed;
+	public int cooldown;
 	public Transform Target;
 	
 	// Use this for initialization
