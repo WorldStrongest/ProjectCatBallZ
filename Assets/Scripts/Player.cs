@@ -25,16 +25,22 @@ public class Player : MonoBehaviour {
 //		}
 		
 //		Debug.Log( nextShot);
-		transform.position += Vector3.right*( Input.GetAxis( "Horizontal" )*speed*Time.deltaTime );
-		transform.position += Vector3.up*( Input.GetAxis( "Vertical" )*speed*Time.deltaTime );
+//			_transform.position += Vector3.right*( Input.GetAxis( "Horizontal" )*speed*Time.deltaTime );
+//			_transform.position += Vector3.up*( Input.GetAxis( "Vertical" )*speed*Time.deltaTime );
+//			
+//			
+		float moveX = Mathf.Clamp( _transform.position.x + ( Input.GetAxis( "Horizontal" )*speed*Time.deltaTime ), -125.0f, 125.0f );
+		float moveY = Mathf.Clamp( _transform.position.y + ( Input.GetAxis( "Vertical" )*speed*Time.deltaTime ), -93.0f, 93.0f );
+			
+		_transform.position = new Vector3(moveX, moveY, _transform.position.z);
+		
+		
 		
 		if( Input.GetButton( "Fire1" ) && Time.time > nextShot ) {
 			Instantiate( bullet, _transform.position, Quaternion.identity );
-//			_go.GetComponent<Bullet>().cooldown
 			nextShot = Time.time + bulletCD;
 		}
 		
-//	Debug.Log( Input.GetAxis( "Vertical" ) );
 	}
 }
 

@@ -21,7 +21,7 @@ public class Bullet : MonoBehaviour {
 		
 		
 		_transform.position += _transform.up*(bulletSpeed*Time.deltaTime);
-		if( _transform.position.y > 115.0f ) {
+		if( Mathf.Abs( _transform.position.y ) > 115.0f || Mathf.Abs( _transform.position.x ) > 200.0f ) {
 			Destroy( gameObject );
 		}
 		

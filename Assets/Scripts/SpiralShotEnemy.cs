@@ -1,16 +1,9 @@
 using UnityEngine;
 using System.Collections;
 
-public class Enemy : MonoBehaviour {
-	public GameObject onDeathBullet;
-	public GameObject enemyBullet;
+public class SpiralShotEnemy : Enemy {
 	Transform _transform;
-	public int hitPoints;
-	public int speed;
-	public int type;
-	public float cooldown;
-	public float nextShot;
-	public Transform _target;
+	public int bulletCount;
 	
 	// Use this for initialization
 	void Start () {
@@ -24,8 +17,12 @@ public class Enemy : MonoBehaviour {
 		_transform.position += Vector3.down*(speed*Time.deltaTime);
 		
 		if( Time.time > nextShot ){
-			Instantiate( enemyBullet, _transform.position, Quaternion.LookRotation(Vector3.forward, _target.position - _transform.position) );
+			for( int i = 0; i < bulletCount; ++i ){
+				Instantiate( enemyBullet, _transform.position, _transform.rotation );
+				_transform.Rotate( new Vector3( 0, 0, 360/bulletCount ) );
+			}
 //			_go.GetComponent<Bullet>().cooldown
+			_transform.Rotate( new Vector3( 0, 0, 30 ) );
 			nextShot = Time.time + cooldown;
 		}
 		
@@ -45,15 +42,4 @@ public class Enemy : MonoBehaviour {
 			Debug.Log (collider.transform.position);
 		}
 	}
-	
-	protected void Target( string unitTarget ) {
-		if( _target == null ){
-			_target = GameObject.FindGameObjectWithTag( unitTarget ).transform;
-		}
-	}
-}
-
-enum enemyType{
-	basic,
-	spiral
 }
