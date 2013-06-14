@@ -3,7 +3,7 @@ using System.Collections;
 
 
 public class Player : MonoBehaviour {
-	//Add a Weapons Class
+	//Add a Weapons Class (Maybe not)
 	public GameObject bullet;
 	float bulletCD;
 	float nextShot;
@@ -14,6 +14,7 @@ public class Player : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		_transform = transform;
+		
 		bulletCD = bullet.GetComponent<Bullet>().cooldown;
 		nextShot = bulletCD;
 	}
@@ -35,9 +36,10 @@ public class Player : MonoBehaviour {
 		_transform.position = new Vector3(moveX, moveY, _transform.position.z);
 		
 		
-		
 		if( Input.GetButton( "Fire1" ) && Time.time > nextShot ) {
 			Instantiate( bullet, _transform.position, Quaternion.identity );
+			Instantiate( bullet, new Vector3(_transform.position.x - 5, _transform.position.y - 3, _transform.position.z), Quaternion.identity );
+			Instantiate( bullet, new Vector3(_transform.position.x + 5, _transform.position.y - 3, _transform.position.z), Quaternion.identity );
 			nextShot = Time.time + bulletCD;
 		}
 		
