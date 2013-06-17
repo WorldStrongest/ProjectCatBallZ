@@ -21,8 +21,13 @@ public class Enemy2 : Enemy {
 		nextBullet = new float[5];
 		nextCD = new float[5];
 		shotFired = new bool[5];
+		nextCD[0] = .25f;
+		nextCD[1] = 2f;
+		nextCD[2] = 1.5f;
+		nextCD[3] = .7f;
+		nextCD[4] = 1f;
 		for( int i = 0; i < 5; ++i ){
-			nextCD[i] = 1f;
+//			nextCD[i] = 1f;
 			nextBullet[i] = nextCD[i];
 			shotFired[i] = false;
 		}
@@ -38,8 +43,10 @@ public class Enemy2 : Enemy {
 		if( Time.time > nextShot ){
 			if( firstShot ){
 				firstShot = false;
-				for( int i = 0; i < 5; ++i ){
-					nextBullet[i] = Time.time + nextCD[i]*i;
+				nextBullet[0] = Time.time + nextCD[0];
+				shotFired[0] = false;
+				for( int i = 1; i < 5; ++i ){
+					nextBullet[i] = nextBullet[i-1] + nextCD[i];
 					shotFired[i] = false;
 				}
 			}
