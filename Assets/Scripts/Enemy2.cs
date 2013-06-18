@@ -6,11 +6,16 @@ using UnityEngine;
 using System.Collections;
 
 public class Enemy2 : Enemy {
-	Transform _transform;
+	public GameObject[] bullet;
 	float[] nextBullet;
-	float[] nextCD;
+	public float[] nextCD;
 	public bool[] shotFired;
 	bool firstShot;
+	public int bulletCount;
+	float sprayCD;
+	public float nextShotInSpray;
+	public int counter;
+	public int totalShots;
 	
 	
 	
@@ -18,16 +23,9 @@ public class Enemy2 : Enemy {
 	void Start () {
 		_transform = transform;
 		nextShot = cooldown;
-		nextBullet = new float[5];
-		nextCD = new float[5];
-		shotFired = new bool[5];
-		nextCD[0] = .25f;
-		nextCD[1] = 2f;
-		nextCD[2] = 1.5f;
-		nextCD[3] = .7f;
-		nextCD[4] = 1f;
-		for( int i = 0; i < 5; ++i ){
-//			nextCD[i] = 1f;
+		nextBullet = new float[totalShots];
+		shotFired = new bool[totalShots];
+		for( int i = 0; i < totalShots; ++i ){
 			nextBullet[i] = nextCD[i];
 			shotFired[i] = false;
 		}
@@ -45,31 +43,32 @@ public class Enemy2 : Enemy {
 				firstShot = false;
 				nextBullet[0] = Time.time + nextCD[0];
 				shotFired[0] = false;
-				for( int i = 1; i < 5; ++i ){
+				counter = 0;
+				for( int i = 1; i < totalShots; ++i ){
 					nextBullet[i] = nextBullet[i-1] + nextCD[i];
 					shotFired[i] = false;
 				}
 			}
 			if( !shotFired[4] && Time.time > nextBullet[4] ){
-				Instantiate( enemyBullet, _transform.position, Quaternion.LookRotation(Vector3.forward, _target.position - _transform.position) );
+				Instantiate( bullet[4], _transform.position, Quaternion.LookRotation(Vector3.forward, _target.position - _transform.position) );
 				nextShot = Time.time + cooldown;
 				firstShot = true;
 				shotFired[4] = true;
 			}
 			else if( !shotFired[3] && Time.time > nextBullet[3] ){
-				Instantiate( enemyBullet, _transform.position, Quaternion.identity );
+				Instantiate( bullet[3], _transform.position, Quaternion.identity );
 				shotFired[3] = true;
 			}
 			else if( !shotFired[2] && Time.time > nextBullet[2] ){
-				Instantiate( enemyBullet, _transform.position, Quaternion.LookRotation(Vector3.forward, _target.position - _transform.position) );
+				Instantiate( bullet[2], _transform.position, Quaternion.LookRotation(Vector3.forward, _target.position - _transform.position) );
 				shotFired[2] = true;
 			}
 			else if( !shotFired[1] && Time.time > nextBullet[1] ){
-				Instantiate( enemyBullet, _transform.position, Quaternion.identity );
+				Instantiate( bullet[1], _transform.position, Quaternion.identity );
 				shotFired[1] = true;
 			}
 			else if( !shotFired[0] && Time.time > nextBullet[0] ){
-				Instantiate( enemyBullet, _transform.position, Quaternion.LookRotation(Vector3.forward, _target.position - _transform.position) );
+				Instantiate( bullet[0], _transform.position, Quaternion.identity );
 				shotFired[0] = true;
 			}
 //			_go.GetComponent<Bullet>().cooldown

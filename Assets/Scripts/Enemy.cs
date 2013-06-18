@@ -4,7 +4,7 @@ using System.Collections;
 public class Enemy : MonoBehaviour {
 	public GameObject onDeathBullet;
 	public GameObject enemyBullet;
-	Transform _transform;
+	public Transform _transform;
 	public int hitPoints;
 	public int speed;
 	public int type;

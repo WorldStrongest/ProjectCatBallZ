@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections;
 
 public class SpiralShotEnemy : Enemy {
-	Transform _transform;
 	public int bulletCount;
 	
 	// Use this for initialization
