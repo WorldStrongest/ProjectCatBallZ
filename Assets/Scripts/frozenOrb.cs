@@ -1,10 +1,9 @@
-//FrozenOrb
-
+//Random Spray
 
 using UnityEngine;
 using System.Collections;
 
-public class Enemy1 : Enemy {
+public class frozenOrb : Enemy {
 	public int bulletCount;
 	float sprayCD;
 	public float nextShotInSpray;
@@ -19,7 +18,6 @@ public class Enemy1 : Enemy {
 		nextShotInSpray = sprayCD;
 		bulletCount = Random.Range( 4, 15 );
 		counter = 0;
-//		Target ( "Player" );
 	}
 	
 	// Update is called once per frame
@@ -27,15 +25,11 @@ public class Enemy1 : Enemy {
 		_transform.position += Vector3.down*(speed*Time.deltaTime);
 		
 		if( Time.time > nextShot ){
-//			RandomSpray( angle );
-//			triShot ( );
 			Instantiate( enemyBullet, _transform.position, Quaternion.Euler( 0, 0, Random.Range( -angle, angle ) ) );
 			++counter;
 			if( counter >= bulletCount ){
-				Instantiate( onDeathBullet, _transform.position, Quaternion.identity );
+				Instantiate( onDeathBullet, _transform.position, Quaternion.LookRotation(Vector3.forward, _target.transform.position - _transform.position) );
 				Destroy( gameObject );
-//			_transform.Rotate( new Vector3( 0, 0, 30 ) );
-//				nextShot = Time.time + cooldown;
 			}
 			nextShot = Time.time + cooldown;
 		}
@@ -55,32 +49,6 @@ public class Enemy1 : Enemy {
 		}
 		else if( collider.gameObject.tag == "Player" ){
 			--hitPoints;
-		}
-	}
-	
-	public void RandomSpray( float angle ){
-		if( Time.time > nextShotInSpray ){
-					
-					Instantiate( enemyBullet, _transform.position, Quaternion.Euler( 0, 0, Random.Range( -angle, angle ) + 180 ) );
-					
-					nextShotInSpray += sprayCD;
-					nextShotInSpray = Time.time + sprayCD;
-					++counter;
-				}
-//				if( counter < bulletCount )
-//					return;
-//			counter = 0;
-	}
-	
-	public void triShot( ){
-		if( Time.time > nextShotInSpray ){
-			Instantiate( enemyBullet, _transform.position, Quaternion.Euler( 0, 0, 180 ) );
-			Instantiate( enemyBullet, _transform.position, Quaternion.Euler( 0, 0, -45 + 180 ) );
-			Instantiate( enemyBullet, _transform.position, Quaternion.Euler( 0, 0, 45 + 180 ) );
-			
-			nextShotInSpray += sprayCD;
-			nextShotInSpray = Time.time + sprayCD;
-			++counter;
 		}
 	}
 }

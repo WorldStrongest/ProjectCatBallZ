@@ -11,12 +11,13 @@ public class Enemy : MonoBehaviour {
 	public float cooldown;
 	public float nextShot;
 	public Transform _target;
+	public string target;
 	
 	// Use this for initialization
 	void Start () {
 		_transform = transform;
 		nextShot = cooldown;
-		Target ( "Player" );
+		Target ( target );
 	}
 	
 	// Update is called once per frame

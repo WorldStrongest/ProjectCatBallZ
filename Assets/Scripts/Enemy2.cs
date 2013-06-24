@@ -11,7 +11,6 @@ public class Enemy2 : Enemy {
 	public float[] nextCD;
 	public bool[] shotFired;
 	bool firstShot;
-	public int bulletCount;
 	float sprayCD;
 	public float nextShotInSpray;
 	public int counter;
@@ -50,7 +49,7 @@ public class Enemy2 : Enemy {
 				}
 			}
 			if( !shotFired[4] && Time.time > nextBullet[4] ){
-				Instantiate( bullet[4], _transform.position, Quaternion.LookRotation(Vector3.forward, _target.position - _transform.position) );
+				Instantiate( bullet[4], _transform.position, Quaternion.identity );
 				nextShot = Time.time + cooldown;
 				firstShot = true;
 				shotFired[4] = true;
@@ -60,7 +59,7 @@ public class Enemy2 : Enemy {
 				shotFired[3] = true;
 			}
 			else if( !shotFired[2] && Time.time > nextBullet[2] ){
-				Instantiate( bullet[2], _transform.position, Quaternion.LookRotation(Vector3.forward, _target.position - _transform.position) );
+				Instantiate( bullet[2], _transform.position, Quaternion.identity );
 				shotFired[2] = true;
 			}
 			else if( !shotFired[1] && Time.time > nextBullet[1] ){
