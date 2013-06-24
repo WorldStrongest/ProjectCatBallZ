@@ -32,7 +32,8 @@ public class MasterSpawner : MonoBehaviour {
 			
 			if ((spawnedCount < _tableSize) && (Time.time >= spawnTable[spawnedCount].spawnTime))
 			{
-				Instantiate(spawnTable[spawnedCount].spawner, _transform.position, _transform.rotation);
+				GameObject go = (GameObject)Instantiate(spawnTable[spawnedCount].spawner, _transform.position, _transform.rotation);
+				go.GetComponent<Spawner>().pathNames = spawnTable[spawnedCount].pathNames;
 				spawnedCount++;
 			} else if (spawnedCount >= _tableSize) {
 				Destroy(gameObject);
@@ -47,6 +48,7 @@ public class MasterSpawner : MonoBehaviour {
 	public class SpawnerTimePair {
 		public GameObject spawner;
 		public float spawnTime;
+		public string[] pathNames;
 	}
 }
 

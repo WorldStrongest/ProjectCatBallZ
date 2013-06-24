@@ -10,6 +10,8 @@ public class Spawner : MonoBehaviour
 	public int enemyIndex; 		// -1 for random enemy
 	public int numToSpawn;		// number of enemies this spawnner spawns
 
+	public string[] pathNames;
+
 	private float spawnTimer;
 	private int _spawnedCount; 	// the number of enemies that have been spawned
 	private Transform _transform;
@@ -47,7 +49,8 @@ public class Spawner : MonoBehaviour
 			i = Random.Range(0,enemies.Length);
 		}
 
-		Instantiate(enemies[i], _transform.position, _transform.rotation); // spawn enemy
+		GameObject go = (GameObject)Instantiate(enemies[i], _transform.position, _transform.rotation); // spawn enemy
+		go.GetComponent<Enemy>().SetEnemyPath(pathNames);
 		_spawnedCount++;
 	}
 }
