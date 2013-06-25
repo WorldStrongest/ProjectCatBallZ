@@ -1,6 +1,4 @@
-//Shots spaced out from time
-//Method to create patterns
-//Need to create another gap to give time inbetween patterns
+//Enemy version 3
 
 using UnityEngine;
 using System.Collections;
@@ -13,7 +11,7 @@ public class Enemy3 : Enemy {
 	public bool[] targetFire;
 	bool firstShot;
 	public int totalShots;
-	
+	 
 	
 	
 	// Use this for initialization

@@ -1,6 +1,4 @@
-//Shots spaced out from time
-//Method to create patterns
-//Need to create another gap to give time inbetween patterns
+//Enemy version 2
 
 using UnityEngine;
 using System.Collections;

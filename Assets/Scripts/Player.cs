@@ -5,16 +5,22 @@ using System.Collections;
 public class Player : MonoBehaviour {
 	//Add a Weapons Class (Maybe not)
 	public GameObject bullet;
+	public float timeToFocus;
+	public float focusTime;
 	float bulletCD;
 	float nextShot;
 	public int hitPoints;
 	public int speed;
+	public int baseSpeed;
+	public int focusSpeed;
 	Transform _transform;
 	
 	// Use this for initialization
 	void Start () {
 		_transform = transform;
 		
+		speed = baseSpeed;
+		focusSpeed = baseSpeed/2;
 		bulletCD = bullet.GetComponent<Bullet>().cooldown;
 		nextShot = bulletCD;
 	}
@@ -35,16 +41,26 @@ public class Player : MonoBehaviour {
 			
 		_transform.position = new Vector3(moveX, moveY, _transform.position.z);
 		
-		
 		if( Input.GetButton( "Fire1" ) && Time.time > nextShot ) {
 			Instantiate( bullet, _transform.position, Quaternion.identity );
 			Instantiate( bullet, new Vector3(_transform.position.x - 5, _transform.position.y - 3, _transform.position.z), Quaternion.identity );
 			Instantiate( bullet, new Vector3(_transform.position.x + 5, _transform.position.y - 3, _transform.position.z), Quaternion.identity );
 			nextShot = Time.time + bulletCD;
+			focusTime -= Time.deltaTime;
+			if( focusTime <= 0 ){
+				speed = focusSpeed;
+			}
+		}
+		
+		if( Input.GetButtonUp( "Fire1" ) ){
+			focusTime = timeToFocus;
+			speed = baseSpeed;
 		}
 		
 	}
+
 }
+
 
 public enum bulletName{
 	defaultShot
