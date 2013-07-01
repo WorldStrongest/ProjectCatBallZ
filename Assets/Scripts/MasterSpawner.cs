@@ -21,7 +21,7 @@ public class MasterSpawner : MonoBehaviour {
 		_transform = transform;
 		_tableSize = spawnTable.Length;
 		
-		spawnTable = spawnTable.OrderBy(st => st.spawnTime).ToArray();
+//		spawnTable = spawnTable.OrderBy(st => st.spawnTime).ToArray();
 	}
 	
 	// Update is called once per frame
@@ -32,22 +32,30 @@ public class MasterSpawner : MonoBehaviour {
 			
 			if ((spawnedCount < _tableSize) && (Time.time >= spawnTable[spawnedCount].spawnTime))
 			{
-				GameObject go = (GameObject)Instantiate(spawnTable[spawnedCount].spawner, _transform.position, _transform.rotation);
-				go.GetComponent<Spawner>().pathNames = spawnTable[spawnedCount].pathNames;
+				if( spawnTable[spawnedCount].pathNames.Length != 0 ){
+					GameObject go = (GameObject)Instantiate(spawnTable[spawnedCount].spawner, _transform.position, _transform.rotation);
+					go.GetComponent<Enemy>().SetEnemyPath(spawnTable[spawnedCount].pathNames);
+				}
+				else{
+					Debug.Log( spawnedCount );
+					Instantiate( spawnTable[spawnedCount].spawner, new Vector3( spawnTable[spawnedCount].spawnPoint, _transform.position.y, 0 ), _transform.rotation );
+				}
 				spawnedCount++;
 			} else if (spawnedCount >= _tableSize) {
 				Destroy(gameObject);
 			}
-		} else {
-			// else you're in edit mode. sort table by time
-			spawnTable = spawnTable.OrderBy(st => st.spawnTime).ToArray();
 		}
+//			else {
+//			// else you're in edit mode. sort table by time
+//			spawnTable = spawnTable.OrderBy(st => st.spawnTime).ToArray();
+//		}
 	}
 	
 	[System.Serializable]
 	public class SpawnerTimePair {
 		public GameObject spawner;
 		public float spawnTime;
+		public float spawnPoint;
 		public string[] pathNames;
 	}
 }

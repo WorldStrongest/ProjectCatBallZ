@@ -22,7 +22,7 @@ public class Enemy : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-//		_transform.position += Vector3.down*(speed*Time.deltaTime);
+		_transform.position += Vector3.down*(speed*Time.deltaTime);
 		
 		if( Time.time > nextShot ){
 			Instantiate( enemyBullet, _transform.position, Quaternion.LookRotation(Vector3.forward, _target.position - _transform.position) );
@@ -39,11 +39,11 @@ public class Enemy : MonoBehaviour {
 	
 	void OnTriggerEnter( Collider collider ){
 		if( collider.gameObject.tag == "Player" || hitPoints == 0){
-			Instantiate( onDeathBullet, _transform.position, Quaternion.LookRotation(Vector3.forward, _target.transform.position - _transform.position) ); 
-			
+			hitPoints--;
+		}
+		if( hitPoints == 0 ){
 			Destroy( gameObject );
-			
-			Debug.Log (collider.transform.position);
+			Instantiate( onDeathBullet, _transform.position, Quaternion.LookRotation(Vector3.forward, _target.transform.position - _transform.position) ); 
 		}
 	}
 	
