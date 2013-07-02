@@ -72,6 +72,7 @@ public class Enemy : MonoBehaviour {
 			"path", enemyPath,
 			"speed", speed*2,
 			"easeType", easeType,
+			"islocal", true,
 			"movetopath", false,
 			"oncomplete", "DestroySelf"));
 	}
