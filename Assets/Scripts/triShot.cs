@@ -15,6 +15,7 @@ public class triShot : MonoBehaviour {
 	void Update () {
 //		if( bullet[0] == null && bullet[1] == null && bullet[2] == null )
 //			Destroy( gameObject );
+		
 		for( int i = 0; i < totalChilds; ++i ){
 			if( bullet[i] != null )
 				break;

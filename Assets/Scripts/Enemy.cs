@@ -19,9 +19,10 @@ public class Enemy : MonoBehaviour {
 	void Start () {
 		_transform = transform;
 		nextShot = cooldown;
+		
+		SetEnemyPath( nodes, easeType );
 		if( target != null )
 			Target ( target );
-		SetEnemyPath( nodes, easeType );
 	}
 	
 	// Update is called once per frame
