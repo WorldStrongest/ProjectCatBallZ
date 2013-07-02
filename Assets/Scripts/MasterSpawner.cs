@@ -20,7 +20,6 @@ public class MasterSpawner : MonoBehaviour {
 	void Start () {
 		_transform = transform;
 		_tableSize = spawnTable.Length;
-		
 //		spawnTable = spawnTable.OrderBy(st => st.spawnTime).ToArray();
 	}
 	
@@ -28,9 +27,9 @@ public class MasterSpawner : MonoBehaviour {
 	void Update () {
 		if (Application.isPlaying)
 		{
-			curTime = Time.time;
+			curTime += Time.deltaTime;
 			
-			if ((spawnedCount < _tableSize) && (Time.time >= spawnTable[spawnedCount].spawnTime))
+			if ((spawnedCount < _tableSize) && (curTime >= spawnTable[spawnedCount].spawnTime))
 			{
 				if( spawnTable[spawnedCount].nodes.Length != 0 ) {
 					GameObject go = (GameObject)Instantiate(spawnTable[spawnedCount].spawner, _transform.position, _transform.rotation);

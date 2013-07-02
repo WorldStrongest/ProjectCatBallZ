@@ -5,8 +5,8 @@ using System.Collections;
 public class Player : MonoBehaviour {
 	//Add a Weapons Class (Maybe not)
 	public GameObject bullet;
-	public float timeToFocus;
-	public float focusTime;
+//	public float timeToFocus;
+//	public float focusTime;
 	float bulletCD;
 	float nextShot;
 	public int hitPoints;
@@ -46,16 +46,27 @@ public class Player : MonoBehaviour {
 			Instantiate( bullet, new Vector3(_transform.position.x - 5, _transform.position.y - 3, _transform.position.z), Quaternion.identity );
 			Instantiate( bullet, new Vector3(_transform.position.x + 5, _transform.position.y - 3, _transform.position.z), Quaternion.identity );
 			nextShot = Time.time + bulletCD;
-			focusTime -= Time.deltaTime;
-			if( focusTime <= 0 ){
-				speed = focusSpeed;
-			}
+			
+//Was used for holding down fire to focus
+//			focusTime -= Time.deltaTime;
+//			if( focusTime <= 0 ){
+//				speed = focusSpeed;
+//			}
 		}
 		
-		if( Input.GetButtonUp( "Fire1" ) ){
-			focusTime = timeToFocus;
+		if( Input.GetButton( "Focus" ) ){
+			speed = focusSpeed;
+		}
+		
+		if( Input.GetButtonUp( "Focus" ) ){
 			speed = baseSpeed;
 		}
+
+//Was used for holding down fire to focus
+//		if( Input.GetButtonUp( "Fire1" ) ){
+//			focusTime = timeToFocus;
+//			speed = baseSpeed;
+//		}
 		
 	}
 

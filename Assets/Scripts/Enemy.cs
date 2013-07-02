@@ -6,6 +6,8 @@ public class Enemy : MonoBehaviour {
 	public GameObject onDeathBullet;
 	public GameObject enemyBullet;
 	public Transform _transform;
+	public Vector3[] nodes;
+	public string easeType;
 	public int hitPoints;
 	public int speed;
 	public float cooldown;
@@ -17,15 +19,20 @@ public class Enemy : MonoBehaviour {
 	void Start () {
 		_transform = transform;
 		nextShot = cooldown;
-		Target ( target );
+		if( target != null )
+			Target ( target );
+		SetEnemyPath( nodes, easeType );
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		_transform.position += Vector3.down*(speed*Time.deltaTime);
+//		_transform.position += Vector3.down*(speed*Time.deltaTime);
 		
 		if( Time.time > nextShot ){
-			Instantiate( enemyBullet, _transform.position, Quaternion.LookRotation(Vector3.forward, _target.position - _transform.position) );
+			if( _target != null )
+				Instantiate( enemyBullet, _transform.position, Quaternion.LookRotation(Vector3.forward, _target.position - _transform.position) );
+			else
+				Instantiate( enemyBullet, _transform.position, _transform.rotation );
 //			_go.GetComponent<Bullet>().cooldown
 			nextShot = Time.time + cooldown;
 		}
@@ -43,7 +50,10 @@ public class Enemy : MonoBehaviour {
 		}
 		if( hitPoints == 0 ){
 			Destroy( gameObject );
-			Instantiate( onDeathBullet, _transform.position, Quaternion.LookRotation(Vector3.forward, _target.transform.position - _transform.position) ); 
+			if( _target != null )
+				Instantiate( onDeathBullet, _transform.position, Quaternion.LookRotation(Vector3.forward, _target.transform.position - _transform.position) ); 
+			else
+				Instantiate( onDeathBullet, _transform.position, _transform.rotation ); 
 		}
 	}
 	
@@ -60,7 +70,7 @@ public class Enemy : MonoBehaviour {
 		// move enemy along the path
 		iTween.MoveTo(gameObject, iTween.Hash(
 			"path", enemyPath,
-			"speed", speed,
+			"speed", speed*2,
 			"easeType", easeType,
 			"movetopath", false,
 			"oncomplete", "DestroySelf"));
