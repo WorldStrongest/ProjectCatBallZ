@@ -32,15 +32,14 @@ public class MasterSpawner : MonoBehaviour {
 			
 			if ((spawnedCount < _tableSize) && (Time.time >= spawnTable[spawnedCount].spawnTime))
 			{
-				if( spawnTable[spawnedCount].nodes.Length != 0 ){
+				if( spawnTable[spawnedCount].nodes.Length != 0 ) {
 					GameObject go = (GameObject)Instantiate(spawnTable[spawnedCount].spawner, _transform.position, _transform.rotation);
-//					go.GetComponent<Enemy>().SetEnemyPath(spawnTable[spawnedCount].pathNames);
-					go.GetComponent<Enemy>().SetEnemyPath(spawnTable[spawnedCount].nodes, spawnTable[spawnedCount].easeType);
+					Enemy enemy = go.GetComponent<Enemy>();
+					
+					if (enemy != null) {
+						enemy.SetEnemyPath(spawnTable[spawnedCount].nodes, spawnTable[spawnedCount].easeType);
+					}
 				}
-//				else{
-//					Debug.Log( spawnedCount );
-//					Instantiate( spawnTable[spawnedCount].spawner, new Vector3( spawnTable[spawnedCount].spawnPoint, _transform.position.y, 0 ), _transform.rotation );
-//				}
 				spawnedCount++;
 			} else if (spawnedCount >= _tableSize) {
 				Destroy(gameObject);
