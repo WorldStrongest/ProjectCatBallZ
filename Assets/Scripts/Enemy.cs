@@ -53,29 +53,16 @@ public class Enemy : MonoBehaviour {
 		}
 	}
 	
-	public void SetEnemyPath( string[] pathNames ) {
-		List<Vector3> enemyPath = new List<Vector3>();
-		
-		// use the list of pathName to create an enemyPath
-		foreach ( string pathName in pathNames ) {
-			Vector3[] tmpPath; // contains nodes of current pathName
-			
-			// if the pathName contains "__r" it is reversed
-			if ( pathName.Contains( "__r" ) ) {
-				tmpPath = iTweenPath.GetPathReversed( pathName.Replace( "__r", "" ) );
-			} else {
-				tmpPath = iTweenPath.GetPath( pathName );
-			}
-			
-			// adds tmpPath to enemyPath
-			enemyPath.AddRange(tmpPath);
-		}
+	public void SetEnemyPath( Vector3[] enemyPath, string easeType ) {
+		if (easeType == string.Empty)
+			easeType = "linear";
 		
 		// move enemy along the path
 		iTween.MoveTo(gameObject, iTween.Hash(
-			"path", enemyPath.ToArray(),
-			"speed", speed*2,
-			"easeType", iTween.EaseType.linear,
+			"path", enemyPath,
+			"speed", speed,
+			"easeType", easeType,
+			"movetopath", false,
 			"oncomplete", "DestroySelf"));
 	}
 	

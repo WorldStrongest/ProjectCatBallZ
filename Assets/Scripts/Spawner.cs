@@ -50,7 +50,7 @@ public class Spawner : MonoBehaviour
 		}
 
 		GameObject go = (GameObject)Instantiate(enemies[i], _transform.position, _transform.rotation); // spawn enemy
-		go.GetComponent<Enemy>().SetEnemyPath(pathNames);
+//		go.GetComponent<Enemy>().SetEnemyPath(pathNames);
 		_spawnedCount++;
 	}
 }
