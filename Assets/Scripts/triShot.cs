@@ -5,6 +5,7 @@ using System.Collections;
 public class triShot : MonoBehaviour {
 	Bullet[] bullet;
 	int totalChilds;
+	bool emptyObject;
 	// Use this for initialization
 	void Start () {
 		bullet = GetComponentsInChildren<Bullet>();
@@ -17,9 +18,14 @@ public class triShot : MonoBehaviour {
 //			Destroy( gameObject );
 		
 		for( int i = 0; i < totalChilds; ++i ){
-			if( bullet[i] != null )
+		if( bullet[i] != null )
+			{
+				emptyObject = false;
 				break;
-			Destroy( gameObject );
+			}
+			emptyObject = true;
 		}
+		if( emptyObject )
+			Destroy( gameObject );
 	}
 }

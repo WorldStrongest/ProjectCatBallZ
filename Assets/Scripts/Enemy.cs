@@ -21,7 +21,7 @@ public class Enemy : MonoBehaviour {
 		nextShot = cooldown;
 		
 		SetEnemyPath( nodes, easeType );
-		if( target != null )
+		if( target.Length != 0 )
 			Target ( target );
 	}
 	
@@ -38,7 +38,7 @@ public class Enemy : MonoBehaviour {
 			nextShot = Time.time + cooldown;
 		}
 		
-		if( _transform.position.y < -115.0f || Mathf.Abs( _transform.position.x ) > 200.0f ) {
+		if( _transform.position.y < -250.0f || Mathf.Abs( _transform.position.x ) > 250.0f ) {
 			Destroy( gameObject );
 		}
 		//
