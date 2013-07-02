@@ -7,6 +7,7 @@ public class Enemy : MonoBehaviour {
 	public GameObject enemyBullet;
 	public Transform _transform;
 	public Vector3[] nodes;
+	public Color pathColor = Color.cyan;
 	public string easeType;
 	public int hitPoints;
 	public int speed;
@@ -24,6 +25,13 @@ public class Enemy : MonoBehaviour {
 		if( target.Length != 0 )
 			Target ( target );
 	}
+	
+	void OnDrawGizmosSelected(){
+		if (nodes.Length > 0) {
+			iTween.DrawPath(nodes, pathColor);
+		}
+	}
+	
 	
 	// Update is called once per frame
 	void Update () {
