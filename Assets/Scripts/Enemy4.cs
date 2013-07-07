@@ -1,4 +1,6 @@
 //Enemy version 4
+//break removed to allow firing 2 shots at the same time
+//Maybe add in displacement of bullets
 
 using UnityEngine;
 using System.Collections;
@@ -53,6 +55,8 @@ public class Enemy4 : Enemy {
 					enemyDATA[i].shotFired = false;
 				}
 			}
+			
+
 			for( int i = totalShots - 1; i >= 0; --i ){
 				if( !enemyDATA[i].shotFired && Time.time > nextBullet[i] ){
 					if( enemyDATA[i].targetFire )
@@ -60,7 +64,7 @@ public class Enemy4 : Enemy {
 					else if( enemyDATA[i].randomAngle )
 						Instantiate( enemyDATA[i].bullet, _transform.position, Quaternion.Euler( 0, 0, Random.Range( -enemyDATA[i].angle, enemyDATA[i].angle ) ) );
 					else if( enemyDATA[i].angle != 0 )
-						Instantiate( enemyDATA[i].bullet, _transform.position, Quaternion.Euler( 0, 0, enemyDATA[i].angle ) );
+						Instantiate( enemyDATA[i].bullet, _transform.position, Quaternion.Euler( 0, 0, enemyDATA[i].angle + 180 ) );
 					else
 						Instantiate( enemyDATA[i].bullet, _transform.position, _transform.rotation );
 					enemyDATA[i].shotFired = true;
@@ -72,7 +76,7 @@ public class Enemy4 : Enemy {
 						enemyDATA[totalShots - 1].shotFired = true;
 						nextShot = Time.time + cooldown;
 					}
-					break;
+//					break;
 				}
 			}
 		}
