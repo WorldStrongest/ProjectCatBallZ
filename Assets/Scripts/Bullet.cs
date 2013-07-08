@@ -29,14 +29,15 @@ public class Bullet : MonoBehaviour {
 	
 	void OnTriggerEnter( Collider collider ) {
 		//Collision with Enemy/Player/Wall
-		Debug.Log(collider.tag);
+//		Debug.Log(collider.tag);
 		if( !enemyBullet && collider.gameObject.tag == "Enemy" ) {
 			Destroy( gameObject );
-			Enemy enemy = collider.gameObject.GetComponent<Enemy>();
+			Enemy enemy;
+			enemy = collider.gameObject.GetComponent<Enemy>();
 			if (enemy == null) {
-				collider.transform.parent.GetComponent<Enemy>();
+				enemy = collider.transform.parent.gameObject.GetComponent<Enemy>();
 			}
-			
+//			transform.parent.gameObject.GetComponent<Enemy>();
 			enemy.hitPoints--;
 		}
 		else if( enemyBullet && collider.gameObject.tag == "Player" ){
