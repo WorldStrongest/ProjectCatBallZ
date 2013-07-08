@@ -38,7 +38,7 @@ public class Bullet : MonoBehaviour {
 				enemy = collider.transform.parent.gameObject.GetComponent<Enemy>();
 			}
 //			transform.parent.gameObject.GetComponent<Enemy>();
-			enemy.hitPoints--;
+			enemy.Damage(1);
 		}
 		else if( enemyBullet && collider.gameObject.tag == "Player" ){
 			Destroy( gameObject );

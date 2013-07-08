@@ -86,6 +86,14 @@ public class Enemy : MonoBehaviour {
 			"oncomplete", "DestroySelf"));
 	}
 	
+	public void Damage(int amount)
+	{
+		hitPoints -= amount;
+		if (hitPoints <= 0) {
+			Destroy( gameObject );
+		}
+	}
+	
 	void DestroySelf() {
 		Destroy( gameObject );
 	}
