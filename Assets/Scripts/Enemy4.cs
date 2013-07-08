@@ -10,6 +10,8 @@ public class enemyData{
 	public GameObject bullet;
 	public float nextCD;
 	public float angle;
+	public float displacementX;
+	public float displacementY;
 	public bool shotFired;
 	public bool targetFire;
 	public bool randomAngle;
@@ -60,13 +62,13 @@ public class Enemy4 : Enemy {
 			for( int i = totalShots - 1; i >= 0; --i ){
 				if( !enemyDATA[i].shotFired && Time.time > nextBullet[i] ){
 					if( enemyDATA[i].targetFire )
-						Instantiate( enemyDATA[i].bullet, _transform.position, Quaternion.LookRotation( Vector3.forward, _target.position - _transform.position ) );
+						Instantiate( enemyDATA[i].bullet, new Vector3( _transform.position.x + enemyDATA[i].displacementX, _transform.position.y + enemyDATA[i].displacementY, 0 ), Quaternion.LookRotation( Vector3.forward, _target.position - _transform.position ) );
 					else if( enemyDATA[i].randomAngle )
-						Instantiate( enemyDATA[i].bullet, _transform.position, Quaternion.Euler( 0, 0, Random.Range( -enemyDATA[i].angle, enemyDATA[i].angle ) ) );
+						Instantiate( enemyDATA[i].bullet, new Vector3( _transform.position.x + enemyDATA[i].displacementX, _transform.position.y + enemyDATA[i].displacementY, 0 ), Quaternion.Euler( 0, 0, Random.Range( -enemyDATA[i].angle, enemyDATA[i].angle ) ) );
 					else if( enemyDATA[i].angle != 0 )
-						Instantiate( enemyDATA[i].bullet, _transform.position, Quaternion.Euler( 0, 0, enemyDATA[i].angle + 180 ) );
+						Instantiate( enemyDATA[i].bullet, new Vector3( _transform.position.x + enemyDATA[i].displacementX, _transform.position.y + enemyDATA[i].displacementY, 0 ), Quaternion.Euler( 0, 0, enemyDATA[i].angle + 180 ) );
 					else
-						Instantiate( enemyDATA[i].bullet, _transform.position, _transform.rotation );
+						Instantiate( enemyDATA[i].bullet, new Vector3( _transform.position.x + enemyDATA[i].displacementX, _transform.position.y + enemyDATA[i].displacementY, 0 ), Quaternion.Euler( _transform.rotation.x, _transform.rotation.y, _transform.rotation.z ) );
 					enemyDATA[i].shotFired = true;
 					if( i == totalShots - 1 ){
 						if( suicideOnComplete ){
