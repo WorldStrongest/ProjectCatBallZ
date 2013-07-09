@@ -69,10 +69,13 @@ public class Player : MonoBehaviour {
 //		}
 		
 	}
+	
+	public void Damage(int amount)
+	{
+		hitPoints -= amount;
+		if (hitPoints <= 0) {
+			Destroy( gameObject );
+		}
+	}
 
-}
-
-
-public enum bulletName{
-	defaultShot
 }

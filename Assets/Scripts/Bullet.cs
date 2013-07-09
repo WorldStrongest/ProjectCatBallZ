@@ -42,7 +42,12 @@ public class Bullet : MonoBehaviour {
 		}
 		else if( enemyBullet && collider.gameObject.tag == "Player" ){
 			Destroy( gameObject );
-			collider.gameObject.GetComponent<Player>().hitPoints--;
+			Player player;
+			player = collider.gameObject.GetComponent<Player>();
+			if( player == null ){
+				player = collider.transform.parent.gameObject.GetComponent<Player>();
+			}
+			player.Damage(1);
 		}
 		
 	}

@@ -1,6 +1,6 @@
 //Enemy version 4
 //break removed to allow firing 2 shots at the same time
-//Maybe add in displacement of bullets
+//Do state machine/phases
 
 using UnityEngine;
 using System.Collections;
