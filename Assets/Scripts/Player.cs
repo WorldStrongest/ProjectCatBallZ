@@ -36,8 +36,8 @@ public class Player : MonoBehaviour {
 //			_transform.position += Vector3.up*( Input.GetAxis( "Vertical" )*speed*Time.deltaTime );
 //			
 //			
-		float moveX = Mathf.Clamp( _transform.position.x + ( Input.GetAxis( "Horizontal" )*speed*Time.deltaTime ), -125.0f, 125.0f );
-		float moveY = Mathf.Clamp( _transform.position.y + ( Input.GetAxis( "Vertical" )*speed*Time.deltaTime ), -93.0f, 93.0f );
+		float moveX = Mathf.Clamp( _transform.position.x + ( Input.GetAxis( "Horizontal" )*speed*Time.deltaTime ), -90.0f, 90.0f );
+		float moveY = Mathf.Clamp( _transform.position.y + ( Input.GetAxis( "Vertical" )*speed*Time.deltaTime ), -90.0f, 90.0f );
 			
 		_transform.position = new Vector3(moveX, moveY, _transform.position.z);
 		
