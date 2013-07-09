@@ -12,6 +12,7 @@ public class enemyData{
 	public float angle;
 	public float displacementX;
 	public float displacementY;
+	public int loopCount;
 	public bool shotFired;
 	public bool targetFire;
 	public bool randomAngle;
@@ -21,6 +22,7 @@ public class Enemy4 : Enemy {
 	public enemyData[] enemyDATA;
 	public float[] nextBullet;
 	public int totalShots;
+	public int localCounter;
 	public bool suicideOnComplete;
 	public bool isBullet;
 	bool firstShot;
@@ -30,11 +32,13 @@ public class Enemy4 : Enemy {
 	// Use this for initialization
 	void Start () {
 		_transform = transform;
+		SetEnemyPath( nodes, easeType, loopType );
 		totalShots = enemyDATA.Length;
 		nextShot = cooldown;
 		nextBullet = new float[totalShots];
 		firstShot = true;
 		Target( target );
+		
 		for( int i = 0; i < totalShots; ++i ){
 			nextBullet[i] = enemyDATA[i].nextCD;
 			enemyDATA[i].shotFired = false;
@@ -45,7 +49,7 @@ public class Enemy4 : Enemy {
 	
 	// Update is called once per frame
 	void Update () {
-		_transform.position += Vector3.down*(speed*Time.deltaTime);
+//		_transform.position += Vector3.down*(speed*Time.deltaTime);
 		
 		if( Time.time > nextShot ){
 			if( firstShot ){
@@ -59,17 +63,18 @@ public class Enemy4 : Enemy {
 			}
 			
 
-			for( int i = totalShots - 1; i >= 0; --i ){
+			for( int i = 0; i <totalShots; ++i ){
 				if( !enemyDATA[i].shotFired && Time.time > nextBullet[i] ){
 					if( enemyDATA[i].targetFire )
 						Instantiate( enemyDATA[i].bullet, new Vector3( _transform.position.x + enemyDATA[i].displacementX, _transform.position.y + enemyDATA[i].displacementY, 0 ), Quaternion.LookRotation( Vector3.forward, _target.position - _transform.position ) );
 					else if( enemyDATA[i].randomAngle )
-						Instantiate( enemyDATA[i].bullet, new Vector3( _transform.position.x + enemyDATA[i].displacementX, _transform.position.y + enemyDATA[i].displacementY, 0 ), Quaternion.Euler( 0, 0, Random.Range( -enemyDATA[i].angle, enemyDATA[i].angle ) ) );
+						Instantiate( enemyDATA[i].bullet, new Vector3( _transform.position.x + enemyDATA[i].displacementX, _transform.position.y + enemyDATA[i].displacementY, 0 ), Quaternion.Euler( 0, 0, Random.Range( -enemyDATA[i].angle, enemyDATA[i].angle ) + 180 ) );
 					else if( enemyDATA[i].angle != 0 )
 						Instantiate( enemyDATA[i].bullet, new Vector3( _transform.position.x + enemyDATA[i].displacementX, _transform.position.y + enemyDATA[i].displacementY, 0 ), Quaternion.Euler( 0, 0, enemyDATA[i].angle + 180 ) );
 					else
-						Instantiate( enemyDATA[i].bullet, new Vector3( _transform.position.x + enemyDATA[i].displacementX, _transform.position.y + enemyDATA[i].displacementY, 0 ), Quaternion.Euler( _transform.rotation.x, _transform.rotation.y, _transform.rotation.z ) );
+						Instantiate( enemyDATA[i].bullet, new Vector3( _transform.position.x + enemyDATA[i].displacementX, _transform.position.y + enemyDATA[i].displacementY, 0 ), Quaternion.Euler( _transform.rotation.x, _transform.rotation.y, _transform.rotation.z + 180 ) );
 					enemyDATA[i].shotFired = true;
+					
 					if( i == totalShots - 1 ){
 						if( suicideOnComplete ){
 							Destroy( gameObject );

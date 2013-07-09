@@ -8,7 +8,9 @@ public class Enemy : MonoBehaviour {
 	public Transform _transform;
 	public Vector3[] nodes;
 	public Color pathColor = Color.cyan;
-	public string easeType;
+	public iTween.EaseType easeType;
+	public iTween.LoopType loopType;
+	public bool moveToPath;
 	public int hitPoints;
 	public int speed;
 	public float cooldown;
@@ -21,7 +23,7 @@ public class Enemy : MonoBehaviour {
 		_transform = transform;
 		nextShot = cooldown;
 		
-		SetEnemyPath( nodes, easeType );
+		SetEnemyPath( nodes, easeType, loopType );
 		if( target.Length != 0 )
 			Target ( target );
 	}
@@ -72,18 +74,28 @@ public class Enemy : MonoBehaviour {
 		}
 	}
 	
-	public void SetEnemyPath( Vector3[] enemyPath, string easeType ) {
-		if (easeType == string.Empty)
-			easeType = "linear";
+	public void SetEnemyPath( Vector3[] enemyPath, iTween.EaseType easeType, iTween.LoopType loopType ) {
+		iTween.Stop( gameObject );
+		
 		
 		// move enemy along the path
+		if( loopType == 0 )
 		iTween.MoveTo(gameObject, iTween.Hash(
 			"path", enemyPath,
 			"speed", speed*2,
 			"easeType", easeType,
 			"islocal", true,
-			"movetopath", false,
+			"movetopath", moveToPath,
+			"looptype", loopType,
 			"oncomplete", "DestroySelf"));
+		else
+			iTween.MoveTo(gameObject, iTween.Hash(
+			"path", enemyPath,
+			"speed", speed*2,
+			"easeType", easeType,
+			"islocal", true,
+			"movetopath", moveToPath,
+			"looptype", loopType));
 	}
 	
 	public void Damage(int amount)
