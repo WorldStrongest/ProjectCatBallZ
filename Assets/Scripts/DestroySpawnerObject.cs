@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 
+// similar to triShot.cs
 public class DestroySpawnerObject : MonoBehaviour {
 	Enemy[] enemy;
 	int totalChilds;

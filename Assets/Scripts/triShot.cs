@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 
+// similar to DestroySpawnerObject.cs
 public class triShot : MonoBehaviour {
 	Bullet[] bullet;
 	int totalChilds;
@@ -18,7 +19,7 @@ public class triShot : MonoBehaviour {
 //			Destroy( gameObject );
 		
 		for( int i = 0; i < totalChilds; ++i ){
-		if( bullet[i] != null )
+			if( bullet[i] != null )
 			{
 				emptyObject = false;
 				break;

@@ -56,7 +56,7 @@ public class Enemy : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter( Collider collider ){
-		if( collider.gameObject.tag == "Player" || hitPoints == 0){
+		if( collider.gameObject.tag == "Player" ){
 			hitPoints--;
 		}
 		if( hitPoints == 0 ){
