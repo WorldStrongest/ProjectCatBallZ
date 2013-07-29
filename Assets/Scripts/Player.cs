@@ -5,10 +5,13 @@ using System.Collections;
 public class Player : MonoBehaviour {
 	//Add a Weapons Class (Maybe not)
 	public GameObject bullet;
+	public GameObject secondaryBullet;
 //	public float timeToFocus;
 //	public float focusTime;
 	float bulletCD;
+	float secondaryBulletCD;
 	float nextShot;
+	float nextShot2;
 	public int hitPoints;
 	public int speed;
 	public int baseSpeed;
@@ -22,7 +25,9 @@ public class Player : MonoBehaviour {
 		speed = baseSpeed;
 		focusSpeed = baseSpeed/2;
 		bulletCD = bullet.GetComponent<Bullet>().cooldown;
+		secondaryBulletCD = secondaryBullet.GetComponent<Bullet>().cooldown;
 		nextShot = bulletCD;
+		nextShot2 = secondaryBulletCD;
 	}
 	
 	// Update is called once per frame
@@ -43,15 +48,21 @@ public class Player : MonoBehaviour {
 		
 		if( Input.GetButton( "Fire1" ) && Time.time > nextShot ) {
 			Instantiate( bullet, _transform.position, Quaternion.identity );
-			Instantiate( bullet, new Vector3(_transform.position.x - 5, _transform.position.y - 3, _transform.position.z), Quaternion.identity );
-			Instantiate( bullet, new Vector3(_transform.position.x + 5, _transform.position.y - 3, _transform.position.z), Quaternion.identity );
+//			Instantiate( bullet, new Vector3(_transform.position.x - 5, _transform.position.y - 3, _transform.position.z), Quaternion.identity );
+//			Instantiate( bullet, new Vector3(_transform.position.x + 5, _transform.position.y - 3, _transform.position.z), Quaternion.identity );
 			nextShot = Time.time + bulletCD;
+		
 			
 //Was used for holding down fire to focus
 //			focusTime -= Time.deltaTime;
 //			if( focusTime <= 0 ){
 //				speed = focusSpeed;
 //			}
+		}
+		
+		if( Input.GetButton( "Fire1" ) && Time.time > nextShot2 ) {
+			Instantiate( secondaryBullet, _transform.position, Quaternion.identity );
+			nextShot2 = Time.time + secondaryBulletCD;
 		}
 		
 		if( Input.GetButton( "Focus" ) ){
