@@ -37,7 +37,6 @@ public class Enemy : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-//		_transform.position += Vector3.down*(speed*Time.deltaTime);
 		
 		if( Time.time > nextShot ){
 			if( _target != null )
@@ -51,7 +50,7 @@ public class Enemy : MonoBehaviour {
 		if( _transform.position.y < -250.0f || Mathf.Abs( _transform.position.x ) > 250.0f ) {
 			Destroy( gameObject );
 		}
-		//
+		
 		//_transform.rotation = Quaternion.Lerp (_transform.rotation, Quaternion.LookRotation(Target.position - _transform.position), 100f*Time.deltaTime );
 	}
 	
@@ -70,13 +69,16 @@ public class Enemy : MonoBehaviour {
 	
 	void OnTriggerEnter(Collider other)
 	{
-		if (other.CompareTag("Bullet")) // hit by a bullet
+		if (other.CompareTag("Bullet") || other.CompareTag("Bullet2")) // hit by a bullet
 		{	
 			TakeDamage(1); // take away 1 hit point
 			 
 		    // disable the bullet and put it back on its stack
 			other.gameObject.SetActive(false);
-		    GameMaster.playerBulletStack.Push(other.gameObject);
+			if (other.CompareTag("Bullet"))
+		    	GameMaster.playerBulletStack.Push(other.gameObject);
+			else
+		    	GameMaster.playerBulletStack2.Push(other.gameObject);
 		}
 	}
 
@@ -95,9 +97,10 @@ public class Enemy : MonoBehaviour {
 		Destroy(this.gameObject);
 		
 		// increment the score
-//		GameMaster.score++;
+		// GameMaster.score++;
 	}
 	
+	// Targets 'unitTarget'
 	protected void Target( string unitTarget ) {
 		if( _target == null ){
 			_target = GameObject.FindGameObjectWithTag( unitTarget ).transform;
@@ -105,38 +108,25 @@ public class Enemy : MonoBehaviour {
 	}
 	
 	public void SetEnemyPath( Vector3[] enemyPath, iTween.EaseType easeType, iTween.LoopType loopType ) {
-		iTween.Stop( gameObject );
-		
-		
+		iTween.Stop( gameObject );	// stops any running iTween
+			
 		// move enemy along the path
-		if( loopType == 0 )
-		iTween.MoveTo(gameObject, iTween.Hash(
-			"path", enemyPath,
-			"speed", speed*2,
-			"easeType", easeType,
-			"islocal", true,
-			"movetopath", moveToPath,
-			"looptype", loopType,
-			"oncomplete", "DestroySelf"));
+		if( loopType == 0 )	// If not looping, explode at the end of the path
+			iTween.MoveTo(gameObject, iTween.Hash(
+				"path", enemyPath,
+				"speed", speed*2,
+				"easeType", easeType,
+				"islocal", true,
+				"movetopath", moveToPath,
+				"looptype", loopType,
+				"oncomplete", "Explode"));
 		else
 			iTween.MoveTo(gameObject, iTween.Hash(
-			"path", enemyPath,
-			"speed", speed*2,
-			"easeType", easeType,
-			"islocal", true,
-			"movetopath", moveToPath,
-			"looptype", loopType));
-	}
-	
-	public void Damage(int amount)
-	{
-		hitPoints -= amount;
-		if (hitPoints <= 0) {
-			Destroy( gameObject );
-		}
-	}
-	
-	void DestroySelf() {
-		Destroy( gameObject );
+				"path", enemyPath,
+				"speed", speed*2,
+				"easeType", easeType,
+				"islocal", true,
+				"movetopath", moveToPath,
+				"looptype", loopType));
 	}
 }
