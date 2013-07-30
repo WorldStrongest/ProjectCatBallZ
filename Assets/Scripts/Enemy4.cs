@@ -68,7 +68,7 @@ public class Enemy4: Enemy {
 				} else {
 					nextShot = Time.time + enemyDATA[curShot].nextCD;
 				}
-			} while (enemyDATA[curShot].nextCD == 0);
+			} while (enemyDATA[curShot].nextCD == 0 && totalShots > 1);
 		}
 	}
 }
