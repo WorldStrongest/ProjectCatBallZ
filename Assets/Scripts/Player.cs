@@ -8,12 +8,11 @@ public class Player : MonoBehaviour {
 	public GameObject secondaryBullet;
 //	public float timeToFocus;
 //	public float focusTime;
-	float bulletCD;
-	float secondaryBulletCD;
-	float nextShot;
-	float nextShot2;
+	public float bulletCD;
+	public float secondaryBulletCD;
+	public float nextShot;
+	public float nextShot2;
 //	public int hitPoints;
-	public int playerBulletSpeed;
 	public int speed;
 	public int baseSpeed;
 	public int focusSpeed;
@@ -22,7 +21,7 @@ public class Player : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		_transform = transform;
-		bulletCD = .25f;
+		bulletCD = .15f;
 		secondaryBulletCD = .7f;
 		speed = baseSpeed;
 		focusSpeed = baseSpeed/2;
@@ -60,7 +59,7 @@ public class Player : MonoBehaviour {
 			newBullet.SetActive(true);
 			
 			// set its speed (it moves in its own onUpdate function)
-			newBullet.GetComponent<Bullet>().motion = new Vector3(0, 0, playerBulletSpeed);   
+//			newBullet.GetComponent<Bullet>().motion = new Vector3(0, playerBulletSpeed, 0);   
 			
 //Was used for holding down fire to focus
 //			focusTime -= Time.deltaTime;
@@ -69,11 +68,19 @@ public class Player : MonoBehaviour {
 //			}
 		}
 		
-		//Was used for secondary shot
-//		if( Input.GetButton( "Fire1" ) && Time.time > nextShot2 ) {
-//			Instantiate( secondaryBullet, _transform.position, Quaternion.identity );
-//			nextShot2 = Time.time + secondaryBulletCD;
-//		}
+
+		if( Input.GetButton( "Fire1" ) && Time.time > nextShot2 ) {
+			nextShot2 = Time.time + secondaryBulletCD;
+			
+			// get a bullet from the stack
+			GameObject newBullet = GameMaster.playerBulletStack2.Pop();
+				
+			// position and enable it
+			newBullet.transform.position = _transform.position;
+			newBullet.SetActive(true);
+			
+			
+		}
 		
 		if( Input.GetButton( "Focus" ) ){
 			speed = focusSpeed;
@@ -104,6 +111,8 @@ public class Player : MonoBehaviour {
 		else if (other.CompareTag("enemy")) // if it was an enemy, just destroy it
 		{
 //			other.GetComponent<Enemy>().Explode();
+			GameMaster.lives--;
+			other.GetComponent<Enemy>().TakeDamage(1);
 		}
 	}
 //Danmage function

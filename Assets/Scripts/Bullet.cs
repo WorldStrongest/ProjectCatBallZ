@@ -4,8 +4,7 @@ using System.Collections;
 public class Bullet : MonoBehaviour {
 	Transform _transform;
 //	public float cooldown;
-//	public int bulletSpeed;
-	public Vector3 motion;
+	public int bulletSpeed;
 	public int damage;
 	public int pierceCount;
 	public bool enemyBullet;
@@ -20,8 +19,8 @@ public class Bullet : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
-		_transform.position += motion*Time.deltaTime;
-//		_transform.position += _transform.up*(bulletSpeed*Time.deltaTime);
+//		_transform.position += motion*Time.deltaTime;
+		_transform.position += _transform.up*(bulletSpeed*Time.deltaTime);
 //		if( Mathf.Abs( _transform.position.y ) > 115.0f || Mathf.Abs( _transform.position.x ) > 200.0f ) {
 //			Destroy( gameObject );
 //		}

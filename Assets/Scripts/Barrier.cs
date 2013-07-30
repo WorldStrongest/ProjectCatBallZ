@@ -15,6 +15,11 @@ public class Barrier : MonoBehaviour {
 			GameMaster.playerBulletStack.Push(other.gameObject); // push the Bullet component, not the collider
 			other.gameObject.SetActive(false); // deactivate the bullet
 		}
+		else if( other.CompareTag("Bullet2") )
+		{
+			GameMaster.playerBulletStack2.Push(other.gameObject); // push the Bullet component, not the collider
+			other.gameObject.SetActive(false); // deactivate the bullet
+		}
 		else if (other.CompareTag("enemyBullet")) // was this an enemy bullet?
 		{
 			GameMaster.enemyBulletStack.Push(other.gameObject);

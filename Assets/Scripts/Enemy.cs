@@ -55,17 +55,47 @@ public class Enemy : MonoBehaviour {
 		//_transform.rotation = Quaternion.Lerp (_transform.rotation, Quaternion.LookRotation(Target.position - _transform.position), 100f*Time.deltaTime );
 	}
 	
-	void OnTriggerEnter( Collider collider ){
-		if( collider.gameObject.tag == "Player" ){
-			hitPoints--;
+//	void OnTriggerEnter( Collider collider ){
+//		if( collider.gameObject.tag == "Player" ){
+//			hitPoints--;
+//		}
+//		if( hitPoints == 0 ){
+//			Destroy( gameObject );
+//			if( _target != null )
+//				Instantiate( onDeathBullet, _transform.position, Quaternion.LookRotation(Vector3.forward, _target.transform.position - _transform.position) ); 
+//			else
+//				Instantiate( onDeathBullet, _transform.position, _transform.rotation ); 
+//		}
+//	}
+	
+	void OnTriggerEnter(Collider other)
+	{
+		if (other.CompareTag("Bullet")) // hit by a bullet
+		{	
+			TakeDamage(1); // take away 1 hit point
+			 
+		    // disable the bullet and put it back on its stack
+			other.gameObject.SetActive(false);
+		    GameMaster.playerBulletStack.Push(other.gameObject);
 		}
-		if( hitPoints == 0 ){
-			Destroy( gameObject );
-			if( _target != null )
-				Instantiate( onDeathBullet, _transform.position, Quaternion.LookRotation(Vector3.forward, _target.transform.position - _transform.position) ); 
-			else
-				Instantiate( onDeathBullet, _transform.position, _transform.rotation ); 
-		}
+	}
+
+	public void TakeDamage(int damage)
+	{
+		// subtract damage and check if it's dead
+		hitPoints -= damage;
+		if (hitPoints <= 0)
+			Explode();
+	}
+
+	public void Explode() // destroy this enemy
+	{
+		// draw particle explosion effect
+		// play sound
+		Destroy(this.gameObject);
+		
+		// increment the score
+//		GameMaster.score++;
 	}
 	
 	protected void Target( string unitTarget ) {
