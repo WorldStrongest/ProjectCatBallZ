@@ -23,6 +23,7 @@ public class Enemy4 : Enemy {
 	public float[] nextBullet;
 	public int totalShots;
 	public int localCounter;
+	int curShot;
 	public bool suicideOnComplete;
 	public bool isBullet;
 	bool firstShot;
@@ -56,6 +57,7 @@ public class Enemy4 : Enemy {
 				firstShot = false;
 				nextBullet[0] = Time.time + enemyDATA[0].nextCD;
 				enemyDATA[0].shotFired = false;
+				curShot = 0;
 				for( int i = 1; i < totalShots; ++i ){
 					nextBullet[i] = nextBullet[i-1] + enemyDATA[i].nextCD;
 					enemyDATA[i].shotFired = false;

@@ -8,11 +8,11 @@ public class Player : MonoBehaviour {
 	public GameObject secondaryBullet;
 //	public float timeToFocus;
 //	public float focusTime;
-	float bulletCD;
-	float secondaryBulletCD;
-	float nextShot;
-	float nextShot2;
-	public int hitPoints;
+	public float bulletCD;
+	public float secondaryBulletCD;
+	public float nextShot;
+	public float nextShot2;
+//	public int hitPoints;
 	public int speed;
 	public int baseSpeed;
 	public int focusSpeed;
@@ -21,11 +21,10 @@ public class Player : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		_transform = transform;
-		
+		bulletCD = .15f;
+		secondaryBulletCD = .7f;
 		speed = baseSpeed;
 		focusSpeed = baseSpeed/2;
-		bulletCD = bullet.GetComponent<Bullet>().cooldown;
-		secondaryBulletCD = secondaryBullet.GetComponent<Bullet>().cooldown;
 		nextShot = bulletCD;
 		nextShot2 = secondaryBulletCD;
 	}
@@ -47,11 +46,20 @@ public class Player : MonoBehaviour {
 		_transform.position = new Vector3(moveX, moveY, _transform.position.z);
 		
 		if( Input.GetButton( "Fire1" ) && Time.time > nextShot ) {
-			Instantiate( bullet, _transform.position, Quaternion.identity );
+//			Instantiate( bullet, _transform.position, Quaternion.identity );
 //			Instantiate( bullet, new Vector3(_transform.position.x - 5, _transform.position.y - 3, _transform.position.z), Quaternion.identity );
 //			Instantiate( bullet, new Vector3(_transform.position.x + 5, _transform.position.y - 3, _transform.position.z), Quaternion.identity );
 			nextShot = Time.time + bulletCD;
 		
+			// get a bullet from the stack
+			GameObject newBullet = GameMaster.playerBulletStack.Pop();
+				
+			// position and enable it
+			newBullet.transform.position = _transform.position;
+			newBullet.SetActive(true);
+			
+			// set its speed (it moves in its own onUpdate function)
+//			newBullet.GetComponent<Bullet>().motion = new Vector3(0, playerBulletSpeed, 0);   
 			
 //Was used for holding down fire to focus
 //			focusTime -= Time.deltaTime;
@@ -60,9 +68,18 @@ public class Player : MonoBehaviour {
 //			}
 		}
 		
+
 		if( Input.GetButton( "Fire1" ) && Time.time > nextShot2 ) {
-			Instantiate( secondaryBullet, _transform.position, Quaternion.identity );
 			nextShot2 = Time.time + secondaryBulletCD;
+			
+			// get a bullet from the stack
+			GameObject newBullet = GameMaster.playerBulletStack2.Pop();
+				
+			// position and enable it
+			newBullet.transform.position = _transform.position;
+			newBullet.SetActive(true);
+			
+			
 		}
 		
 		if( Input.GetButton( "Focus" ) ){
@@ -80,13 +97,32 @@ public class Player : MonoBehaviour {
 //		}
 		
 	}
-	
-	public void Damage(int amount)
+	void OnTriggerEnter(Collider other) // must have hit an enemy or enemy bullet
 	{
-		hitPoints -= amount;
-		if (hitPoints <= 0) {
-			Destroy( gameObject );
+		// lose a life
+//		GameManager.lives--;
+		
+		// check if it was a bullet we hit, if so put it back on its stack
+		if (other.CompareTag("enemyBullet"))
+		{
+			GameMaster.enemyBulletStack.Push(other.gameObject);
+	 		other.gameObject.SetActive(false); // deactivate the bullet
+		}
+		else if (other.CompareTag("enemy")) // if it was an enemy, just destroy it
+		{
+//			other.GetComponent<Enemy>().Explode();
+			GameMaster.lives--;
+			other.GetComponent<Enemy>().TakeDamage(1);
 		}
 	}
+//Danmage function
+//Uncomment later
+//	public void Damage(int amount)
+//	{
+//		hitPoints -= amount;
+//		if (hitPoints <= 0) {
+//			Destroy( gameObject );
+//		}
+//	}
 
 }
