@@ -11,6 +11,7 @@ public class PlayerFlyIn : MonoBehaviour {
 	public bool moveToPath;
 	
 	Player _player;
+	Transform _transform;
 	
 	void OnDrawGizmosSelected(){
 		if (nodes.Length > 0) {
@@ -20,6 +21,7 @@ public class PlayerFlyIn : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		_player = GetComponent<Player>();
+		_transform = transform;
 		_player.enabled = false;		// Disable player control
 					
 		// Moves player along nodes path
@@ -34,12 +36,15 @@ public class PlayerFlyIn : MonoBehaviour {
 		
 		// Rotates player among y axis
 		iTween.RotateBy(gameObject, iTween.Hash (
-			"y", -20.0f)
+			"y", -15.0f)
 		);
 	}
 	
 	// Enables the player's control
 	void EnableControl() {
+		iTween.Stop(gameObject);
+		_transform.rotation = Quaternion.identity;
 		_player.enabled = true;
+		Destroy(GetComponent<PlayerFlyIn>());
 	}
 }
