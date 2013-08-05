@@ -30,7 +30,6 @@ public class GameMaster : MonoBehaviour {
 	
 	// Use this for initialization
 	void Start () {
-		
 		if( PlayerPrefs.HasKey( "sfxVol" ) )
 			sfxVol = PlayerPrefs.GetInt( "sfxVol" );
 		else
@@ -52,11 +51,13 @@ public class GameMaster : MonoBehaviour {
 	
 	// Initiates the Bullet Pools for player and enemy
 	void InitBulletPools() {
+		GameObject bulletPool = new GameObject("Bullet Pool");
 		
 		// Player Bullet Pool
 		for (int i = 0; i < playerBulletPoolSize; i++)
 		{
 			GameObject newBullet = Instantiate (playerBullet, Vector3.zero, Quaternion.identity) as GameObject; // create a bullet
+			newBullet.transform.parent = bulletPool.transform;
 			newBullet.gameObject.SetActive(false);	// disable it until it's needed
 			playerBulletStack.Push(newBullet);		// put it on the stack
 		}
@@ -64,14 +65,17 @@ public class GameMaster : MonoBehaviour {
 		for(int i = 0; i < playerBulletPoolSize; i++)
 		{
 			GameObject newBullet = Instantiate(playerBullet2, Vector3.zero, Quaternion.identity) as GameObject;
-			newBullet.gameObject.SetActive(false);
-			playerBulletStack2.Push(newBullet);
+			newBullet.transform.parent = bulletPool.transform;
+			newBullet.gameObject.SetActive(false);	// disable it until it's needed
+			playerBulletStack2.Push(newBullet);		// put it on the stack
 		}
+		
 		
 		// Enemy Bullet Pool
 		for (int i = 0; i < enemyBulletPoolSize; i++)
 		{
 			GameObject newBullet = Instantiate (enemyBullet, Vector3.zero, Quaternion.identity) as GameObject; // create a bullet
+			newBullet.transform.parent = bulletPool.transform;
 			newBullet.gameObject.SetActive(false);	// disable it until it's needed
 			enemyBulletStack.Push(newBullet);		// put it on the stack
 		}
