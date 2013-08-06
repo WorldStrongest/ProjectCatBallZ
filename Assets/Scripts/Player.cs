@@ -97,24 +97,7 @@ public class Player : MonoBehaviour {
 //		}
 		
 	}
-	void OnTriggerEnter(Collider other) // must have hit an enemy or enemy bullet
-	{
-		// lose a life
-//		GameManager.lives--;
-		
-		// check if it was a bullet we hit, if so put it back on its stack
-		if (other.CompareTag("enemyBullet"))
-		{
-			GameMaster.enemyBulletStack.Push(other.gameObject);
-	 		other.gameObject.SetActive(false); // deactivate the bullet
-		}
-		else if (other.CompareTag("enemy")) // if it was an enemy, just destroy it
-		{
-//			other.GetComponent<Enemy>().Explode();
-			GameMaster.lives--;
-			other.GetComponent<Enemy>().TakeDamage(1);
-		}
-	}
+	
 //Danmage function
 //Uncomment later
 //	public void Damage(int amount)
