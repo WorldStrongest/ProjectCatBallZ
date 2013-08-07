@@ -1,3 +1,4 @@
+
 // Enemy 4 mod
 using UnityEngine;
 using System.Collections;
@@ -7,11 +8,17 @@ public class enemyData{
 	public GameObject bullet;
 	public float nextCD;
 	public float angle;
+//	public float displacementX;
+//	public float displacementY;
+//	public int loopCount;
+//	public bool targetFire;
+//	public bool randomAngle;
 	public float displacementX;
-	public float displacementY;
-	public int loopCount;
-	public bool targetFire;
-	public bool randomAngle;
+ 	public float displacementY;
+ 	public int loopCount;
+	public bool shotFired;
+ 	public bool targetFire;
+ 	public bool randomAngle;
 };
 
 public class Enemy4: Enemy {
@@ -28,7 +35,10 @@ public class Enemy4: Enemy {
 	void Start() {
 		_transform = transform;	// cache this transform
 		SetEnemyPath( nodes, easeType, loopType );
-
+		
+		if( target.Length != 0 )
+			Target ( target );
+		
 		curShot = 0;
 		totalShots = enemyDATA.Length;
 		nextShot = Time.time + enemyDATA[0].nextCD;

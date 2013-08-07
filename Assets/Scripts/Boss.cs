@@ -16,58 +16,71 @@ public class Boss: Enemy {
 	int curShot; // The index of the current shot
 	int totalShots;	// The total number of shots this enemy has
 	public int[] nextPhase;
-	int phaseCount;
-
-	// float[] nextBullet;
+	public int phaseCount;
+	
+	bool firstShot;
+	float[] nextBullet;
 	// int localCounter
 	// int curShot;
 	// 
 
-	void Start() {
-		_transform = transform;	// cache this transform
-		SetEnemyPath( nodes, easeType, loopType );
+	void Start () {
+		_transform = transform;
 
-		curShot = 0;
-		totalShots = phases[phaseCount].enemyDATA.Length;
-		nextShot = Time.time + phases[phaseCount].enemyDATA[0].nextCD;
-	}
+ 		SetEnemyPath( nodes, easeType, loopType );
+ 		totalShots = phases[phaseCount].enemyDATA.Length;
+		nextShot = cooldown;
+		nextBullet = new float[totalShots];
+		firstShot = true;
+		Target( target );
+		
+		for( int i = 0; i < totalShots; ++i ){
+			nextBullet[i] = phases[phaseCount].enemyDATA[i].nextCD;
+			phases[phaseCount].enemyDATA[i].shotFired = false;
+		}	
+ 	}
 	
-	void Update() {
-		if ( Time.time > nextShot ) {
-			do {
-				// get a bullet from the stack
-				// need to figure out which stack to pull bullet from based on enemyDATA[curShot].bullet
-				//GameObject newBullet = GameMaster.enemyBulletStack.Pop();
-				GameObject newBullet = Instantiate ( phases[phaseCount].enemyDATA[curShot].bullet ) as GameObject;
-				
-				// rotation is different in these
-				if ( phases[phaseCount].enemyDATA[curShot].targetFire ) {
-					newBullet.transform.rotation = Quaternion.LookRotation( Vector3.forward, _target.position - _transform.position );
-				} else if ( phases[phaseCount].enemyDATA[curShot].randomAngle ) {
-					newBullet.transform.rotation = Quaternion.Euler( 0, 0, Random.Range( -phases[phaseCount].enemyDATA[curShot].angle, phases[phaseCount].enemyDATA[curShot].angle ) + 180 );
-				} else if ( phases[phaseCount].enemyDATA[curShot].angle != 0 ) {
-					newBullet.transform.rotation = Quaternion.Euler( 0, 0, phases[phaseCount].enemyDATA[curShot].angle + 180 );
-				} else {
-					newBullet.transform.rotation = Quaternion.Euler( _transform.rotation.x, _transform.rotation.y, _transform.rotation.z + 180 ) ;
+	void Update () {
+//		_transform.position += Vector3.down*(speed*Time.deltaTime);
+		
+		if( Time.time > nextShot ){
+			if( firstShot ){
+				firstShot = false;
+				nextBullet[0] = Time.time + phases[phaseCount].enemyDATA[0].nextCD;
+				phases[phaseCount].enemyDATA[0].shotFired = false;
+				curShot = 0;
+				for( int i = 1; i < totalShots; ++i ){
+					nextBullet[i] = nextBullet[i-1] + phases[phaseCount].enemyDATA[i].nextCD;
+					phases[phaseCount].enemyDATA[i].shotFired = false;
 				}
+			}
 
-				// position and enable it
-				newBullet.transform.position =  _transform.position + new Vector3( phases[phaseCount].enemyDATA[curShot].displacementX, phases[phaseCount].enemyDATA[curShot].displacementY, 0);
-				newBullet.SetActive(true);
 
-				++curShot;
-				if (curShot >= totalShots) {
-					if (suicideOnComplete)
-						Explode();
-					else {
-						curShot = 0;
-						nextShot = Time.time + cooldown;
+		
+ 
+			for( int i = 0; i <totalShots; ++i ){
+				if( !phases[phaseCount].enemyDATA[i].shotFired && Time.time > nextBullet[i] ){
+					if( phases[phaseCount].enemyDATA[i].targetFire )
+						Instantiate( phases[phaseCount].enemyDATA[i].bullet, new Vector3( _transform.position.x + phases[phaseCount].enemyDATA[i].displacementX, _transform.position.y + phases[phaseCount].enemyDATA[i].displacementY, 0 ), Quaternion.LookRotation( Vector3.forward, _target.position - _transform.position ) );
+					else if( phases[phaseCount].enemyDATA[i].randomAngle )
+						Instantiate( phases[phaseCount].enemyDATA[i].bullet, new Vector3( _transform.position.x + phases[phaseCount].enemyDATA[i].displacementX, _transform.position.y + phases[phaseCount].enemyDATA[i].displacementY, 0 ), Quaternion.Euler( 0, 0, Random.Range( -phases[phaseCount].enemyDATA[i].angle, phases[phaseCount].enemyDATA[i].angle ) + 180 ) );
+					else if( phases[phaseCount].enemyDATA[i].angle != 0 )
+						Instantiate( phases[phaseCount].enemyDATA[i].bullet, new Vector3( _transform.position.x + phases[phaseCount].enemyDATA[i].displacementX, _transform.position.y + phases[phaseCount].enemyDATA[i].displacementY, 0 ), Quaternion.Euler( 0, 0, phases[phaseCount].enemyDATA[i].angle + 180 ) );
+					else
+						Instantiate( phases[phaseCount].enemyDATA[i].bullet, new Vector3( _transform.position.x + phases[phaseCount].enemyDATA[i].displacementX, _transform.position.y + phases[phaseCount].enemyDATA[i].displacementY, 0 ), Quaternion.Euler( _transform.rotation.x, _transform.rotation.y, _transform.rotation.z + 180 ) );
+					phases[phaseCount].enemyDATA[i].shotFired = true;
+					
+					if( i == totalShots - 1 ){
+						if( suicideOnComplete ){
+							Destroy( gameObject );
+						}
+						firstShot = true;
+						phases[phaseCount].enemyDATA[totalShots - 1].shotFired = true;
+//					break;
 					}
-				} else {
-					nextShot = Time.time + phases[phaseCount].enemyDATA[curShot].nextCD;
-				}
-			} while (phases[phaseCount].enemyDATA[curShot].nextCD == 0 && totalShots > 1);
-		}
+ 				}
+			}
+ 		}
 	}
 	
 	void OnTriggerEnter(Collider other)
@@ -83,12 +96,17 @@ public class Boss: Enemy {
 			else
 		    	GameMaster.playerBulletStack2.Push(other.gameObject);
 		}
-		if( hitPoints < nextPhase[1] && phaseCount == 1 ){
-			++phaseCount;
-			SetNewPath();
-			SetEnemyPath( nodes, easeType, loopType );
-		}
-		else if( hitPoints < nextPhase[0] && phaseCount == 0 ){
+//		if( hitPoints < nextPhase[1] && phaseCount == 1 ){
+//			++phaseCount;
+//			SetNewPath();
+//			SetEnemyPath( nodes, easeType, loopType );
+//		}
+//		else if( hitPoints < nextPhase[0] && phaseCount == 0 ){
+//			++phaseCount;
+//			SetNewPath();
+//			SetEnemyPath( nodes, easeType, loopType );
+//		}
+		if( hitPoints < nextPhase[0] && phaseCount == 0 ){
 			++phaseCount;
 			SetNewPath();
 			SetEnemyPath( nodes, easeType, loopType );
