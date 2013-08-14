@@ -69,15 +69,13 @@ public class Enemy4: Enemy {
 
 				++curShot;
 				if (curShot >= totalShots) {
-					if (suicideOnComplete)
+					if (suicideOnComplete) {
 						Explode();
-					else {
+					} else {
 						curShot = 0;
-						nextShot = Time.time + cooldown;
 					}
-				} else {
-					nextShot = Time.time + enemyDATA[curShot].nextCD;
 				}
+				nextShot = Time.time + enemyDATA[curShot].nextCD;
 			} while (enemyDATA[curShot].nextCD == 0 && totalShots > 1);
 		}
 	}
