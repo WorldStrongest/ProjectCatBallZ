@@ -8,15 +8,9 @@ public class enemyData{
 	public GameObject bullet;
 	public float nextCD;
 	public float angle;
-//	public float displacementX;
-//	public float displacementY;
-//	public int loopCount;
-//	public bool targetFire;
-//	public bool randomAngle;
 	public float displacementX;
  	public float displacementY;
  	public int loopCount;
-	public bool shotFired;
  	public bool targetFire;
  	public bool randomAngle;
 };
