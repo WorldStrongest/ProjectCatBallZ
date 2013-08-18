@@ -22,8 +22,30 @@ public class Barrier : MonoBehaviour {
 		}
 		else if (other.CompareTag("enemyBullet")) // was this an enemy bullet?
 		{
-			GameMaster.enemyBulletStack.Push(other.gameObject);
+			Destroy( other.gameObject );
+//			GameMaster.enemyBulletStack.Push(other.gameObject);
+//			other.gameObject.SetActive(false); // deactivate the bullet
+		}
+	}
+	
+	void OnTriggerStay( Collider other )
+	{
+		if (other.CompareTag("Bullet")) // was this a player bullet?
+		{
+			// put the bullet back on the stack for later re-use
+			GameMaster.playerBulletStack.Push(other.gameObject); // push the Bullet component, not the collider
 			other.gameObject.SetActive(false); // deactivate the bullet
+		}
+		else if( other.CompareTag("Bullet2") )
+		{
+			GameMaster.playerBulletStack2.Push(other.gameObject); // push the Bullet component, not the collider
+			other.gameObject.SetActive(false); // deactivate the bullet
+		}
+		else if (other.CompareTag("enemyBullet")) // was this an enemy bullet?
+		{
+			Destroy( other.gameObject );
+//			GameMaster.enemyBulletStack.Push(other.gameObject);
+//			other.gameObject.SetActive(false); // deactivate the bullet
 		}
 	}
 }

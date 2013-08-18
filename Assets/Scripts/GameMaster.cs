@@ -26,7 +26,7 @@ public class GameMaster : MonoBehaviour {
 	
 	public static Stack<GameObject> playerBulletStack = new Stack<GameObject>();	// a stack to store all the player bullets
 	public static Stack<GameObject> playerBulletStack2 = new Stack<GameObject>();	// a stack to store the player's 2ndary bullets
-	public static Stack<GameObject> enemyBulletStack = new Stack<GameObject>();		// a stack to store all the enemy bullets
+//	public static Stack<GameObject> enemyBulletStack = new Stack<GameObject>();		// a stack to store all the enemy bullets
 	
 	// Use this for initialization
 	void Start () {
@@ -72,13 +72,13 @@ public class GameMaster : MonoBehaviour {
 		
 		
 		// Enemy Bullet Pool
-		for (int i = 0; i < enemyBulletPoolSize; i++)
-		{
-			GameObject newBullet = Instantiate (enemyBullet, Vector3.zero, Quaternion.identity) as GameObject; // create a bullet
-			newBullet.transform.parent = bulletPool.transform;
-			newBullet.gameObject.SetActive(false);	// disable it until it's needed
-			enemyBulletStack.Push(newBullet);		// put it on the stack
-		}
+//		for (int i = 0; i < enemyBulletPoolSize; i++)
+//		{
+//			GameObject newBullet = Instantiate (enemyBullet, Vector3.zero, Quaternion.identity) as GameObject; // create a bullet
+//			newBullet.transform.parent = bulletPool.transform;
+//			newBullet.gameObject.SetActive(false);	// disable it until it's needed
+//			enemyBulletStack.Push(newBullet);		// put it on the stack
+//		}
 		
 	}
 }

@@ -11,8 +11,9 @@ public class PlayerHitbox : MonoBehaviour {
 		// check if we were hit by a bullet, if so put it back on its stack
 		if (other.CompareTag("enemyBullet"))
 		{
-			GameMaster.enemyBulletStack.Push(other.gameObject);
-	 		other.gameObject.SetActive(false); // deactivate the bullet
+			Destroy( other.gameObject );
+//			GameMaster.enemyBulletStack.Push(other.gameObject);
+//	 		other.gameObject.SetActive(false); // deactivate the bullet
 		}
 		else if (other.CompareTag("Enemy"))
 		{
